@@ -6,21 +6,17 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 
     public float speed;
-    public Text countText;
     public Text winText;
     public Text loseText;
 
     private bool flag;
     private Rigidbody rb;
-    private int count;
     void Start()
     {
 	flag = false;
         rb = GetComponent<Rigidbody>();
-        count = 0;
 	loseText.text = "";
         winText.text = "";
-        SetCountText();
     }
 
     IEnumerator Grow()
@@ -34,9 +30,9 @@ public class PlayerController : MonoBehaviour {
     {
 	if(!flag)
 	{
-	    if(transform.localScale.x > 1.0f)
+	    if(transform.localScale.x > 3.0f)
 	    {
-	       loseText.text = "You lost :(";
+	       loseText.text = "¡Has perdido! :(";
 	    }
 	    else
 	    {
@@ -61,17 +57,10 @@ public class PlayerController : MonoBehaviour {
         if(other.gameObject.CompareTag("Pick Up"))
         {
             other.gameObject.SetActive(false);
-            count = count + 1;
-            SetCountText();
         }
-    }
-    void SetCountText()
-    {
-        countText.text = "Count: " + count.ToString();
-        if(count >= 4)
-        {
-            winText.text = "You won!";
-        }
-	
+	if(other.gameObject.CompareTag("Finish"))
+	{
+	    winText.text = "¡Ganaste! :)";
+	}
     }
 }

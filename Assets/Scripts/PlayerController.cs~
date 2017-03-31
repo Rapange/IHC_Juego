@@ -8,14 +8,43 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public Text countText;
     public Text winText;
+    public Text loseText;
+
+    private bool flag;
     private Rigidbody rb;
     private int count;
     void Start()
     {
+	flag = false;
         rb = GetComponent<Rigidbody>();
         count = 0;
+	loseText.text = "";
         winText.text = "";
         SetCountText();
+    }
+
+    IEnumerator Grow()
+    {
+	yield return new WaitForSeconds(0.5f);
+        transform.localScale += new Vector3(0.05f, 0.05f, 0.05f);
+	flag = false;
+    }
+
+    void Update()
+    {
+	if(!flag)
+	{
+	    if(transform.localScale.x > 3.0f)
+	    {
+	       loseText.text = "¡Has perdido! :(";
+	    }
+	    else
+	    {
+	       StartCoroutine("Grow");
+	    }
+	    flag = true;
+	    
+	}
     }
 
     void FixedUpdate()
@@ -35,13 +64,18 @@ public class PlayerController : MonoBehaviour {
             count = count + 1;
             SetCountText();
         }
+	if(other.gameObject.CompareTag("Finish"))
+	{
+	    winText.text = "¡Ganaste! :)";
+	}
     }
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
         if(count >= 4)
         {
-            winText.text = "You won!";
+            winText.text = "¡Ganaste! :)";
         }
+	
     }
 }
