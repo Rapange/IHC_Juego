@@ -11,19 +11,25 @@ public class PlayerController : MonoBehaviour {
 
     private bool flag;
     private Rigidbody rb;
+    public GameObject restartButton;
+    public AudioClip wining, losing;
+    private AudioSource music;
+
     void Start()
     {
-	flag = false;
+        music = GetComponent<AudioSource>();
+        restartButton.SetActive(false);
+    	flag = false;
         rb = GetComponent<Rigidbody>();
-	loseText.text = "";
+	    loseText.text = "";
         winText.text = "";
     }
 
     IEnumerator Grow()
     {
-	yield return new WaitForSeconds(0.5f);
+	    yield return new WaitForSeconds(0.5f);
         transform.localScale += new Vector3(0.05f, 0.05f, 0.05f);
-	flag = false;
+	    flag = false;
     }
 
     void Update()
@@ -33,7 +39,12 @@ public class PlayerController : MonoBehaviour {
 	    if(transform.localScale.x > 2.0f)
 	    {
 	       if(winText.text == "")
-	         loseText.text = "¡Has perdido! :(";
+           {
+                loseText.text = "¡Has perdido! :(";
+                restartButton.SetActive(true);
+                    music.clip = losing;
+                    music.Play();
+           }	         
 	    }
 	    else
 	    {
@@ -62,6 +73,9 @@ public class PlayerController : MonoBehaviour {
 	if(other.gameObject.CompareTag("Finish") && loseText.text == "")
 	{
 	    winText.text = "¡Ganaste! :)";
+            restartButton.SetActive(true);
+            music.clip = wining;
+            music.Play();
 	}
     }
 }
