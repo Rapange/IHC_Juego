@@ -28,11 +28,12 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-	if(!flag)
+	if(!flag && winText.text == "")
 	{
-	    if(transform.localScale.x > 3.0f)
+	    if(transform.localScale.x > 2.0f)
 	    {
-	       loseText.text = "¡Has perdido! :(";
+	       if(winText.text == "")
+	         loseText.text = "¡Has perdido! :(";
 	    }
 	    else
 	    {
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour {
         {
             other.gameObject.SetActive(false);
         }
-	if(other.gameObject.CompareTag("Finish"))
+	if(other.gameObject.CompareTag("Finish") && loseText.text == "")
 	{
 	    winText.text = "¡Ganaste! :)";
 	}
