@@ -6,18 +6,26 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
+	private GameObject end;
+	private GameObject master;
+	private GameObject wall;
     public float speed;
     public Text winText;
     public Text loseText;
+	public Text resetText;
 
     private bool flag;
     private Rigidbody rb;
     void Start()
     {
+		wall = GameObject.Find("Walls");
+		end = GameObject.Find ("Lost");
+		master = GameObject.Find ("Master");
 	flag = false;
         rb = GetComponent<Rigidbody>();
 	loseText.text = "";
         winText.text = "";
+		resetText.text = "";
     }
 
     IEnumerator Grow()
@@ -36,8 +44,13 @@ public class PlayerController : MonoBehaviour {
 	{
 	    if(transform.localScale.x > 1.5f)
 	    {
-	       if(winText.text == "")
-	         loseText.text = "¡Has perdido! :(";
+				if (winText.text == "") {
+					loseText.text = "¡Has perdido! :(";
+					//resetText.text = "Presiona R para reiniciar.";
+					end.GetComponent<AudioSource> ().Play ();
+					master.GetComponent<AudioSource> ().Stop ();
+				}
+	         
 	    }
 	    else
 	    {
@@ -66,11 +79,13 @@ public class PlayerController : MonoBehaviour {
 	    if(other.gameObject.CompareTag("Finish") && loseText.text == "")
 	    {
 	        winText.text = "¡Ganaste! :)";
+			//resetText.text = "Presiona R para reiniciar.";
+			other.GetComponent<AudioSource> ().Play ();
+			master.GetComponent<AudioSource> ().Stop ();
 	    }
     }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(0);
-    }
+	public void RestartGame()
+	{
+		SceneManager.LoadScene(0);
+	}
 }
