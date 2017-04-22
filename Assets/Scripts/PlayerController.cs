@@ -68,4 +68,9 @@ public class PlayerController : MonoBehaviour {
 	        winText.text = "¡Ganaste! :)";
 	    }
     }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
